@@ -1,0 +1,146 @@
+#brute force
+#time complex: 0(n) space complex:0(n^2)
+
+class TicTacToe {
+private:
+    vector<vector<int>> arr;
+    int n;
+public:
+    TicTacToe(int size) {
+        n=size;
+        for(int i=0; i<n; i++) {
+            vector<int> tmp;
+            for(int j=0; j<n; j++) {
+                tmp.push_back(0);
+            }
+            arr.push_back(tmp);
+        }
+    }
+    
+    int move(int row, int col, int player) {
+        arr[row][col] = player;
+//         for(int i=0; i<n; i++) {
+//             for(int j=0; j<n; j++) 
+//                 cout<<arr[i][j]<<" ";
+//             cout<<endl;
+//         }
+        
+        
+        int flag;
+                
+        if(arr[row][0]!=0) {
+            flag=1;
+            for(int j=1; j<n; j++) {
+                if(arr[row][0]!=arr[row][j]) {
+                    flag=0;
+                    break;
+                }
+            } 
+            if(flag==1) {
+                // cout<<arr[row][col]<<"\n";
+                return arr[row][0];
+            }
+        }
+        
+
+        if(arr[0][col]!=0) {
+            flag=1;
+            for(int j=1; j<n; j++) {
+                if(arr[0][col]!=arr[j][col]) {
+                    flag=0;
+                    break;
+                }
+            }   
+            if(flag==1) {
+                return arr[0][col];
+            }
+        }
+    
+        
+        if(row+col+1 == n && arr[0][n-1]!=0) {
+            flag=1;
+            for(int i=0 ; i<n; i++) {
+                if(arr[i][n-i-1]!= arr[0][n-1]) {
+                    flag=0;
+                    break;
+                }
+            }
+            if(flag==1) {
+                return arr[0][n-1];
+            }
+        }
+        
+        if(row==col && arr[0][0]!=0) {
+            flag=1;
+            for(int i=0; i<n; i++) {
+                if(arr[i][i]!=arr[0][0]) {
+                    flag=0; 
+                    break;
+                }
+            }
+            if(flag==1) {
+                return arr[0][0];
+            }
+        }
+        
+        // cout<<"***************\n";
+        
+        return 0;
+    }
+};
+
+
+
+#better approach
+#time complex: 0(1) space complex:0(n)
+
+class TicTacToe {
+private:
+    vector<int> r;
+    vector<int> c;
+    int d1,d2;
+    int n;
+public:
+    TicTacToe(int size) {
+        n=size; d1=0; d2=0;
+        for(int i=0; i<n; i++) {
+            r.push_back(0);
+            c.push_back(0);
+        }
+    }
+    
+    int move(int row, int col, int player) {
+        
+        if(player==1){
+            r[row] += 1;
+            if(r[row]==n) return 1;
+            c[col] += 1;
+            if(c[col]==n) return 1;
+            
+            if(row==col) {
+                d1++;
+                if(d1==n) return 1;
+            }
+            if(row+col==n-1) {
+                d2++;
+                if(d2==n) return 1;
+            }
+        }
+        else {
+            r[row] -= 1;
+            if(r[row]==-n) return 2;
+            c[col] -= 1;
+            if(c[col]==-n) return 2;
+            
+            if(row==col) {
+                d1--;
+                if(d1==-n) return 2;
+            }
+            if(row+col==n-1) {
+                d2--;
+                if(d2==-n) return 2;
+            }
+        }
+        return 0;
+    }
+};
